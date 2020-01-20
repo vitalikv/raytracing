@@ -142,14 +142,14 @@
 				
 	var geometry = new THREE.BoxBufferGeometry( 40, 40, 40 );
 	for ( var i = 0; i < 10; i ++ ) {
-		var material = phongMaterial;
+		var material = new THREE.MeshLambertMaterial();
 		//material.color.setHSL( Math.random(), 1.0, 0.3 );
 		var mesh = new THREE.Mesh( geometry, material );
 		mesh.position.x = 75;
 		mesh.position.y = -250 + 5;
 		mesh.position.z = -75 + Math.random() * 4 - 2;
 
-		group.add( mesh );
+		scene.add( mesh );
 	}				
 
 				// bottom
@@ -195,19 +195,19 @@
 
 				var intensity = 70000;
 
-				var light = new THREE.PointLight( 0xffaa55, intensity );
+				var light = new THREE.PointLight( 0xffffff, intensity );
 				light.position.set( - 200, 100, 100 );
-				light.physicalAttenuation = true;
+				//light.physicalAttenuation = true;
 				scene.add( light );
 
-				var light = new THREE.PointLight( 0x55aaff, intensity );
+				var light = new THREE.PointLight( 0xffffff, intensity );
 				light.position.set( 200, 100, 100 );
-				light.physicalAttenuation = true;
+				//light.physicalAttenuation = true;
 				scene.add( light );
 
 				var light = new THREE.PointLight( 0xffffff, intensity * 1.5 );
 				light.position.set( 0, 0, 300 );
-				light.physicalAttenuation = true;
+				//light.physicalAttenuation = true;
 				scene.add( light );
 
 			}

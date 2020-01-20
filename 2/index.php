@@ -37,44 +37,57 @@ init();
 animate();
 
 
-function init() {
+function init() 
+{
 	container = document.createElement( 'div' );
 	document.body.appendChild( container );
 	var width = window.innerWidth;
 	var height = window.innerHeight;
-	renderer = new THREE.WebGLRenderer();
 	
-	// todo - support pixelRatio in this demo
-	renderer.setSize( width, height );
-	document.body.appendChild( renderer.domElement );
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color( 0xffffff );
-	camera = new THREE.PerspectiveCamera( 45, width / height, 0.1, 100 );
-	camera.position.set( 0, 0, 8 );
-	controls = new THREE.OrbitControls( camera, renderer.domElement );
-	controls.minDistance = 5;
-	controls.maxDistance = 20;
-	controls.enablePan = false;
-	controls.enableDamping = true;
-	controls.dampingFactor = 0.05;
+	scene.background = new THREE.Color( 0xffffff );	
+	
+	if(1==2)
+	{
+		camera = new THREE.PerspectiveCamera( 45, width / height, 0.1, 100 );
+		camera.position.set( 0, 0, 8 );	
+		
+		renderer = new THREE.WebGLRenderer();
+		renderer.setSize( width, height );
+		document.body.appendChild( renderer.domElement );
+		
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.minDistance = 5;
+		controls.maxDistance = 20;
+		controls.enablePan = false;
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.05;		
+		
+	}
+
 	//
+	
 	scene.add( new THREE.AmbientLight( 0xaaaaaa, 0.2 ) );
-	var light = new THREE.DirectionalLight( 0xddffdd, 0.6 );
-	light.position.set( 1, 1, 1 );
-	light.castShadow = true;
-	light.shadow.mapSize.width = 1024;
-	light.shadow.mapSize.height = 1024;
-	var d = 10;
-	light.shadow.camera.left = - d;
-	light.shadow.camera.right = d;
-	light.shadow.camera.top = d;
-	light.shadow.camera.bottom = - d;
-	light.shadow.camera.far = 1000;
-	scene.add( light );
+				var intensity = 70000;
+
+				var light = new THREE.PointLight( 0xffffff, intensity );
+				light.position.set( - 200, 100, 100 );
+				//light.physicalAttenuation = true;
+				scene.add( light );
+
+				var light = new THREE.PointLight( 0xffffff, intensity );
+				light.position.set( 200, 100, 100 );
+				//light.physicalAttenuation = true;
+				scene.add( light );
+
+				var light = new THREE.PointLight( 0xffffff, intensity * 1.5 );
+				light.position.set( 0, 0, 300 );
+				//light.physicalAttenuation = true;
+				scene.add( light );
 	// model
 
 	//
-	var geometry = new THREE.BoxGeometry( 3, 3, 3 );
+	var geometry = new THREE.BoxBufferGeometry( 3, 3, 3 );
 	for ( var i = 0; i < 20; i ++ ) {
 		var material = new THREE.MeshLambertMaterial();
 		material.color.setHSL( Math.random(), 1.0, 0.3 );
@@ -88,9 +101,9 @@ function init() {
 	}
 
 
-	window.addEventListener( 'resize', onWindowResize, false );
-	window.addEventListener( 'mousemove', onTouchMove );
-	window.addEventListener( 'touchmove', onTouchMove );
+	//window.addEventListener( 'resize', onWindowResize, false );
+	//window.addEventListener( 'mousemove', onTouchMove );
+	//window.addEventListener( 'touchmove', onTouchMove );
 	
 	function onTouchMove( event ) {
 		var x, y;
@@ -105,6 +118,24 @@ function init() {
 		mouse.y = - ( y / window.innerHeight ) * 2 + 1;
 	}
 	
+	initRaytracing();
+}
+
+
+function initRaytracing() 
+{	
+	renderer = new THREE.RaytracingRenderer
+	({
+		workers: 5,
+		workerPath: 'js/RaytracingWorker.js',
+		blockSize: 64
+	});
+	
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );	
+	
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 100 );
+	camera.position.set( 0, 0, 8 );	
 }
 
 
@@ -118,7 +149,7 @@ function onWindowResize() {
 
 
 function animate() {
-	requestAnimationFrame( animate );
+	//requestAnimationFrame( animate );
 
 	renderer.render( scene, camera );
 }
