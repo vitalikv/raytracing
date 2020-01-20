@@ -139,25 +139,18 @@
 				sphere.position.set( - 50, - 250 + 5, - 50 );
 				group.add( sphere );
 
-				var sphere2 = new THREE.Mesh( sphereGeometry, mirrorMaterialSmooth );
-				sphere2.scale.multiplyScalar( 0.5 );
-				sphere2.position.set( 175, - 250 + 5, - 150 );
-				group.add( sphere2 );
+				
+	var geometry = new THREE.BoxBufferGeometry( 40, 40, 40 );
+	for ( var i = 0; i < 10; i ++ ) {
+		var material = phongMaterial;
+		//material.color.setHSL( Math.random(), 1.0, 0.3 );
+		var mesh = new THREE.Mesh( geometry, material );
+		mesh.position.x = 75;
+		mesh.position.y = -250 + 5;
+		mesh.position.z = -75 + Math.random() * 4 - 2;
 
-				// Box
-
-				var box = new THREE.Mesh( boxGeometry, mirrorMaterialFlat );
-				box.position.set( - 175, - 250 + 2.5, - 150 );
-				box.rotation.y = 0.5;
-				group.add( box );
-
-				// Glass
-
-				var glass = new THREE.Mesh( sphereGeometry, glassMaterialSmooth );
-				glass.scale.multiplyScalar( 0.5 );
-				glass.position.set( 75, - 250 + 5, - 75 );
-				glass.rotation.y = 0.5;
-				scene.add( glass );
+		group.add( mesh );
+	}				
 
 				// bottom
 
